@@ -1,6 +1,8 @@
-# TypeORM fixtures cli
+# Prisma Fixtures
 
-Relying on [faker.js](https://github.com/faker-js/faker), typeorm-fixtures-cli allows you to create a ton of fixtures/fake data for use while developing or testing your project. It gives you a few essential tools to make it very easy to generate complex data with constraints in a readable and easy to edit way, so that everyone on your team can tweak the fixtures if needed.
+Inspired by [@getbigger-io/prisma-fixtures-cli](https://github.com/getbigger-io/prisma-fixtures) (now abandoned), this is a modification of [typeorm-fixtures](https://github.com/RobinCK/typeorm-fixtures) for the Prisma ORM (latest Prisma 7 at time of writing). Note that not all features of typeorm-fixtures are supported.
+
+Relying on [faker.js](https://github.com/faker-js/faker), prisma-fixtures allows you to create a ton of fixtures/fake data for use while developing or testing your project. It gives you a few essential tools to make it very easy to generate complex data with constraints in a readable and easy to edit way, so that everyone on your team can tweak the fixtures if needed.
 
 ## Table of Contents
 
@@ -11,7 +13,6 @@ Relying on [faker.js](https://github.com/faker-js/faker), typeorm-fixtures-cli a
   - [Fixture Ranges](#fixture-ranges)
   - [Fixture Reference](#fixture-reference)
   - [Fixture Lists](#fixture-lists)
-  - [Calling Methods](#calling-sync-and-async-methods)
 - [Handling Relations](#handling-relations)
 - [Advanced Guide](#advanced-guide)
   - [Parameters](#parameters)
@@ -27,23 +28,23 @@ Relying on [faker.js](https://github.com/faker-js/faker), typeorm-fixtures-cli a
 #### NPM
 
 ```bash
-npm install typeorm-fixtures-cli --save-dev
+npm install @sfcivictech/prisma-fixtures --save-dev
 ```
 
 #### Yarn
 
 ```bash
-yarn add typeorm-fixtures-cli --dev
+yarn add @sfcivictech/prisma-fixtures --dev
 ```
 
 ## Development Setup
 
 ```bash
 # install dependencies
-npm install
+yarn
 
 # build dist files
-npm run build
+yarn build
 ```
 
 ## Example
@@ -85,17 +86,13 @@ items:
     lastName: '{{name.lastName}}'
     email: '{{internet.email}}'
     profile: '@profile1'
-    __call:
-      setPassword:
-        - foo
+    password: 'hashed_password'
   user2:
     firstName: '{{name.firstName}}'
     lastName: '{{name.lastName}}'
     email: '{{internet.email}}'
     profile: '@profile2'
-    __call:
-      setPassword:
-        - foo
+    password: 'hashed_password'
 ```
 
 `fixtures/Profile.yml`
@@ -105,7 +102,7 @@ entity: Profile
 items:
   profile1:
     aboutMe: <%= ['about string', 'about string 2', 'about string 3'].join(", ") %>
-    skype: skype-account>
+    skype: skype-account
     language: english
   profile2:
     aboutMe: <%= ['about string', 'about string 2', 'about string 3'].join(", ") %>
@@ -205,24 +202,6 @@ items:
 ```
 
 `Post($current*100)` will return Post100 for post1, Post200 for post2 etc.
-
-### Calling Sync and Async Methods
-
-Sometimes though you need to call a method to initialize some more data, you can do this just like with properties but instead using the method name and giving it an array of arguments.
-
-```yaml
-entity: User
-items:
-  user{1..10}:
-    username: bob
-    fullname: Bob
-    birthDate: 1980-10-10
-    email: bob@example.org
-    favoriteNumber: 42
-    __call:
-      setPassword:
-        - foo
-```
 
 ## Handling Relations
 
@@ -335,9 +314,6 @@ items:
     birthDate: '{{date.past}}'
     email: '{{internet.email}}'
     favoriteNumber: '{{datatype.number}}'
-    __call:
-      setPassword:
-        - foo
 ```
 
 ### EJS templating
@@ -349,7 +325,7 @@ entity: Profile
 items:
   profile1:
     aboutMe: <%= ['about string', 'about string 2', 'about string 3'].join(", ") %>
-    skype: skype-account>
+    skype: skype-account
     language: english
 ```
 
@@ -414,58 +390,12 @@ module.exports = { default: UserProcessor }
 
 ```
 
-
-### Entity Schemas
-
-If you are using Entity Schemas in typeorm, you are likely to encounter problems with the `__call` feature in typeorm-fixtures due to the way the entity object is constructed. 
-
-As a workaround, you should be able to duplicate the same method functionality in the [Load Processor](#load-processor) preProcess method (Note that the object passed in will be a plain object and not your entity object).
-
 ## Usage
 
 ```
 Usage: fixtures load [options] <path> Fixtures folder/file path
 
 Use -h or --help to show details of options: fixtures load -h
-```
-
-##### If entities files are in typescript (like [typeorm](https://typeorm.io/using-cli#if-entities-files-are-in-typescript))
-
-This CLI tool is written in javascript and to be run on node. If your entity files are in typescript, you will need to transpile them to javascript before using CLI. You may skip this section if you only use javascript.
-
-You may setup ts-node in your project to ease the operation as follows:
-
-Install ts-node:
-
-```
-npm install ts-node --save-dev
-```
-
-Add typeorm command under scripts section in package.json
-
-```
-"scripts": {
-    ...
-    "fixtures": "fixtures-ts-node-commonjs"
-}
-```
-
-For ESM projects add this instead:
-
-```
-"scripts": {
-    ...
-    "fixtures": "fixtures-ts-node-esm"
-}
-```
-
-##### Require multiple additional modules
-
-If you're using multiple modules at once (e.g. ts-node and tsconfig-paths)
-you have the ability to require these modules with multiple require flags. For example:
-
-```
-fixtures load ./fixtures --dataSource=./dataSource.ts --sync --require=ts-node/register --require=tsconfig-paths/register
 ```
 
 ### Programmatically loading fixtures
@@ -478,34 +408,24 @@ For example, the below code snippet will load all fixtures exist in `./fixtures`
 ```typescript
 import * as path from 'path';
 import { Builder, fixturesIterator, Loader, Parser, Resolver } from 'typeorm-fixtures-cli/dist';
-import { createConnection, getRepository } from 'typeorm';
 import { CommandUtils } from 'typeorm/commands/CommandUtils';
 
+import { prisma } from './prisma/client'; // import an instance of your generated Prisma client
+
 const loadFixtures = async (fixturesPath: string) => {
-  let dataSource: DataSource | undefined = undefined;
-
   try {
-    dataSource = await CommandUtils.loadDataSource(dataSourcePath);
-    await dataSource.initialize();
-    await dataSource.synchronize(true);
-
     const loader = new Loader();
     loader.load(path.resolve(fixturesPath));
 
     const resolver = new Resolver();
     const fixtures = resolver.resolve(loader.fixtureConfigs);
-    const builder = new Builder(connection, new Parser(), false);
+    const builder = new Builder(prisma, new Parser());
 
     for (const fixture of fixturesIterator(fixtures)) {
-      const entity: any = await builder.build(fixture);
-      await dataSource.getRepository(fixture.entity).save(entity);
+      await builder.build(fixture);
     }
   } catch (err) {
     throw err;
-  } finally {
-    if (dataSource) {
-      await dataSource.destroy();
-    }
   }
 };
 
@@ -515,41 +435,16 @@ loadFixtures('./fixtures')
   })
   .catch((err) => {
     console.log(err);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });
 ```
 
-## Samples
+## Copyright
 
-- [typeorm-fixtures-sample](https://github.com/RobinCK/typeorm-fixtures-sample)
+prisma-fixtures
+Copyright (c) 2026 SF Civic Tech
 
-## Contributors
-
-### Code Contributors
-
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="https://github.com/RobinCK/typeorm-fixtures/graphs/contributors"><img src="https://opencollective.com/typeorm-fixtures/contributors.svg?width=890&button=false" /></a>
-
-### Financial Contributors
-
-Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/typeorm-fixtures/contribute)]
-
-#### Individuals
-
-<a href="https://opencollective.com/typeorm-fixtures"><img src="https://opencollective.com/typeorm-fixtures/individuals.svg?width=890"></a>
-
-#### Organizations
-
-Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/typeorm-fixtures/contribute)]
-
-<a href="https://opencollective.com/typeorm-fixtures/organization/0/website"><img src="https://opencollective.com/typeorm-fixtures/organization/0/avatar.svg"></a>
-<a href="https://opencollective.com/typeorm-fixtures/organization/1/website"><img src="https://opencollective.com/typeorm-fixtures/organization/1/avatar.svg"></a>
-<a href="https://opencollective.com/typeorm-fixtures/organization/2/website"><img src="https://opencollective.com/typeorm-fixtures/organization/2/avatar.svg"></a>
-<a href="https://opencollective.com/typeorm-fixtures/organization/3/website"><img src="https://opencollective.com/typeorm-fixtures/organization/3/avatar.svg"></a>
-<a href="https://opencollective.com/typeorm-fixtures/organization/4/website"><img src="https://opencollective.com/typeorm-fixtures/organization/4/avatar.svg"></a>
-<a href="https://opencollective.com/typeorm-fixtures/organization/5/website"><img src="https://opencollective.com/typeorm-fixtures/organization/5/avatar.svg"></a>
-<a href="https://opencollective.com/typeorm-fixtures/organization/6/website"><img src="https://opencollective.com/typeorm-fixtures/organization/6/avatar.svg"></a>
-<a href="https://opencollective.com/typeorm-fixtures/organization/7/website"><img src="https://opencollective.com/typeorm-fixtures/organization/7/avatar.svg"></a>
-<a href="https://opencollective.com/typeorm-fixtures/organization/8/website"><img src="https://opencollective.com/typeorm-fixtures/organization/8/avatar.svg"></a>
-<a href="https://opencollective.com/typeorm-fixtures/organization/9/website"><img src="https://opencollective.com/typeorm-fixtures/organization/9/avatar.svg"></a>
-
-MIT © [Igor Ognichenko](https://github.com/RobinCK)
+typeorm-fixtures
+Copyright (c) 2019 Igor Ognichenko
