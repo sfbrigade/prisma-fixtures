@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./dist",
     "target": "es2019",
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "node10",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
