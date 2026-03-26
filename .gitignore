@@ -19,3 +19,5 @@ src/**.js
 .idea/*
 .vscode/*
 *.iml
+
+test/integration/assets/generated

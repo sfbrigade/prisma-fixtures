@@ -15,7 +15,7 @@ module.exports = {
   env: {
     es6: true,
   },
-  ignorePatterns: ['coverage/**', 'dist/**', '**/*.js'],
+  ignorePatterns: ['coverage/**', 'dist/**', '**/*.js', 'test/integration/assets/generated'],
   root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
