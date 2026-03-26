@@ -16,7 +16,7 @@
     "types": ["node"],
     "pretty": true
   },
-  "exclude": ["dist", "coverage", ".nyc_output", "node_modules", "test"]
+  "exclude": ["dist", "coverage", ".nyc_output", "node_modules", "test", "prisma.config.ts"]
 }
 
 //  "compilerOptions": {

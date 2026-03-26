@@ -9,7 +9,6 @@ export class Builder {
     constructor(
         private readonly client: any /* generated PrismaClient instance */,
         private readonly parser: IDataParser,
-        private readonly ignoreDecorators: boolean,
     ) {}
 
     async build(fixture: IFixture): Promise<IEntity> {

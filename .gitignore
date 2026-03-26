@@ -21,3 +21,4 @@ src/**.js
 *.iml
 
 test/integration/assets/generated
+test.db

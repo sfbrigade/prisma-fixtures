@@ -11,7 +11,7 @@ describe('Builder', () => {
     it('should be build entity', async () => {
         const connection = new MockConnection();
         const parser = new Parser();
-        const builder = new Builder(connection, parser, false);
+        const builder = new Builder(connection, parser);
 
         const result = await builder.build({
             parameters: {},
@@ -39,7 +39,7 @@ describe('Builder', () => {
     it('should be processed entity', async () => {
         const connection = new MockConnection();
         const parser = new Parser();
-        const builder = new Builder(connection, parser, false);
+        const builder = new Builder(connection, parser);
 
         const result = await builder.build({
             parameters: {},
@@ -67,7 +67,7 @@ describe('Builder', () => {
     it('should be processor not found', () => {
         const connection = new MockConnection();
         const parser = new Parser();
-        const builder = new Builder(connection, parser, false);
+        const builder = new Builder(connection, parser);
 
         chai.expect(
             builder.build({
@@ -89,7 +89,7 @@ describe('Builder', () => {
     it('should be resolved entity field as promised', async () => {
         const connection = new MockConnection();
         const parser = new Parser();
-        const builder = new Builder(connection, parser, false);
+        const builder = new Builder(connection, parser);
         builder.entities = {
             user1: Object.assign({}, {
                 firstName: 'foo',

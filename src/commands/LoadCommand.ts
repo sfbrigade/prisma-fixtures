@@ -7,8 +7,7 @@ import * as fs from 'fs';
 import * as cliProgress from 'cli-progress';
 import * as resolveFrom from 'resolve-from';
 import * as yargs from 'yargs';
-import { CommandUtils } from 'typeorm/commands/CommandUtils';
-import { DataSource } from 'typeorm';
+import { camelCase } from 'lodash';
 
 import { Builder } from '../Builder';
 import { fixturesIterator } from '../util';
@@ -28,11 +27,11 @@ export class LoadCommand implements yargs.CommandModule {
                 demandOption: true,
                 describe: 'Fixtures folder/file paths.',
             })
-            .option('dataSource', {
-                alias: 'd',
-                default: 'dataSource.ts',
+            .option('client', {
+                alias: 'c',
+                default: 'lib/prisma.ts',
                 demandOption: true,
-                describe: 'Path to the file where your DataSource instance is defined.',
+                describe: 'Path to the file where your client instance is defined.',
                 string: true, // eslint-disable-line id-denylist
             })
             .option('require', {
@@ -41,22 +40,15 @@ export class LoadCommand implements yargs.CommandModule {
                 describe: 'A list of additional modules. e.g. ts-node/register.',
                 string: true, // eslint-disable-line id-denylist
             })
-            .boolean('ignoreDecorators')
-            .boolean('sync')
             .boolean('debug')
             .boolean('color')
             .describe({
                 color: 'Enable / disable color output (default: --color).',
                 debug: 'Enable / disable debug (default: --debug).',
-                ignoreDecorators:
-                    'Enable / disable "ignoreDecorator" option of class-transformer. (default: --no-ignoreDecorators)',
-                sync: 'Enable / disable database schema sync (default: --no-sync).',
             })
             .default({
                 color: true,
                 debug: true,
-                ignoreDecorators: false,
-                sync: false,
             });
     }
 
@@ -67,25 +59,18 @@ export class LoadCommand implements yargs.CommandModule {
             require(resolveFrom.silent(process.cwd(), req) || req);
         }
 
-        const dataSourcePath = path.resolve(args.dataSource as string);
-        if (!fs.existsSync(dataSourcePath)) {
-            throw new Error(`TypeOrm config ${dataSourcePath} not found`);
+        const clientPath = path.resolve(args.client as string);
+        if (!fs.existsSync(clientPath)) {
+            throw new Error(`Client config ${clientPath} not found`);
         }
 
-        let dataSource: DataSource | undefined = undefined;
+        let prisma: any = undefined;
         try {
             if (withDebug) {
                 console.log(chalk.grey('Connection to database...')); // eslint-disable-line
             }
-            dataSource = await CommandUtils.loadDataSource(dataSourcePath);
-            await dataSource.initialize();
-
-            if (args.sync) {
-                if (withDebug) {
-                    console.log(chalk.grey('Synchronize database schema')); // eslint-disable-line
-                }
-                await dataSource.synchronize(true);
-            }
+            ({ prisma } = await import(clientPath));
+            await prisma.$connect();
 
             if (withDebug) {
                 console.log(chalk.grey('Loading fixtureConfigs')); // eslint-disable-line
@@ -111,7 +96,7 @@ export class LoadCommand implements yargs.CommandModule {
             }
             const resolver = new Resolver();
             const fixtures = resolver.resolve(loader.fixtureConfigs);
-            const builder = new Builder(dataSource, new Parser(), args.ignoreDecorators as boolean);
+            const builder = new Builder(prisma, new Parser());
 
             bar.start(fixtures.length, 0, { name: '' });
 
@@ -120,7 +105,7 @@ export class LoadCommand implements yargs.CommandModule {
 
                 try {
                     bar.increment(1, { name: fixture.name });
-                    await dataSource.getRepository(fixture.entity).save(entity);
+                    await prisma[camelCase(fixture.entity)].create({ data: entity });
                 } catch (e) {
                     bar.stop();
                     throw e;
@@ -133,13 +118,13 @@ export class LoadCommand implements yargs.CommandModule {
             if (withDebug) {
                 console.log(chalk.grey('Database disconnect')); // eslint-disable-line
             }
-            await dataSource.destroy();
+            await prisma.$disconnect();
             process.exit(0);
         } catch (err: any) {
             console.log(chalk.red('Fail fixture loading: ' + err.message)); // eslint-disable-line
 
-            if (dataSource) {
-                await dataSource.destroy();
+            if (prisma) {
+                await prisma.$disconnect();
             }
             process.exit(1);
         }
