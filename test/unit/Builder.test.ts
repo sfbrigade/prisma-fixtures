@@ -92,6 +92,7 @@ describe('Builder', () => {
         const builder = new Builder(connection, parser);
         builder.entities = {
             user1: Object.assign({}, {
+                id: 1,
                 firstName: 'foo',
                 lastName: 'boo',
                 email: 'email',
@@ -112,16 +113,14 @@ describe('Builder', () => {
             },
         });
 
-        const awaitedResult = {
-            title: post.title,
-            description: post.description,
-            user: await post.user,
-        };
-
-        chai.expect(awaitedResult).to.be.deep.equal({
+        chai.expect(post).to.be.deep.equal({
             title: 'A Post',
             description: 'A description',
-            user: builder.entities['user1'],
+            user: {
+                connect: {
+                    id: 1,
+                },
+            },
         });
     });
 });

@@ -1,6 +1,7 @@
 entity: Comment
 locale: 'pl'
 parameters: {}
+resolvedFields: ["post"]
 items:
   comment{1..10}:
     fullName: '{{name.firstName}} {{name.lastName}}'

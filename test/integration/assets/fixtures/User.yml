@@ -2,6 +2,7 @@ entity: User
 locale: 'pl'
 parameters: {}
 processor: ../processor/UserProcessor
+resolvedFields: ["profile"]
 items:
   user1:
     firstName: '{{name.firstName}}'

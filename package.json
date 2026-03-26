@@ -16,7 +16,7 @@
     "clean": "trash dist",
     "lint:fix": "prettier src/**/*.ts --write && eslint --fix .",
     "lint": "eslint . && prettier src/**/*.ts --list-different",
-    "test": "nyc mocha \"test/**/*.ts\"",
+    "test": "nyc mocha \"test/**/*.test.ts\"",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "commit": "npx git-cz"

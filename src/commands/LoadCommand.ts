@@ -7,7 +7,6 @@ import * as fs from 'fs';
 import * as cliProgress from 'cli-progress';
 import * as resolveFrom from 'resolve-from';
 import * as yargs from 'yargs';
-import { camelCase } from 'lodash';
 
 import { Builder } from '../Builder';
 import { fixturesIterator } from '../util';
@@ -101,11 +100,9 @@ export class LoadCommand implements yargs.CommandModule {
             bar.start(fixtures.length, 0, { name: '' });
 
             for (const fixture of fixturesIterator(fixtures)) {
-                const entity: any = await builder.build(fixture);
-
                 try {
+                    await builder.build(fixture);
                     bar.increment(1, { name: fixture.name });
-                    await prisma[camelCase(fixture.entity)].create({ data: entity });
                 } catch (e) {
                     bar.stop();
                     throw e;
