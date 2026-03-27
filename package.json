@@ -77,7 +77,6 @@
     "release-it": "^19.2.4",
     "trash-cli": "^5.0.0",
     "ts-node": "^10.9.0",
-    "typeorm": "^0.3.28",
     "typescript": "^5.0.0",
     "yaml-lint": "^1.2.4"
   },
