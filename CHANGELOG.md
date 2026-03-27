@@ -1,4 +1,8 @@
-## 0.0.2 (2026-03-27)
+## [0.0.3](https://github.com/sfbrigade/prisma-fixtures/compare/0.0.2...0.0.3) (2026-03-27)
+
+
+
+## [0.0.2](https://github.com/sfbrigade/prisma-fixtures/compare/eca2cb81d976c29978e9ea93fd5ffbfaf6f2ee1e...0.0.2) (2026-03-27)
 
 
 ### Bug Fixes
