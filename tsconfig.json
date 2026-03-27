@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./dist",
     "target": "es2019",
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "node10",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
@@ -15,7 +16,7 @@
     "types": ["node"],
     "pretty": true
   },
-  "exclude": ["dist", "coverage", ".nyc_output", "node_modules", "test"]
+  "exclude": ["dist", "coverage", ".nyc_output", "node_modules", "test", "prisma.config.ts"]
 }
 
 //  "compilerOptions": {

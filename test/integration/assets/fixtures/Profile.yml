@@ -4,7 +4,7 @@ parameters: {}
 items:
   profile1:
     aboutMe: <%= ['about string', 'about string 2', 'about string 3'].join(", ") %>
-    skype: skype-account>
+    skype: skype-account
     language: english
   profile2:
     aboutMe: <%= ['about string', 'about string 2', 'about string 3'].join(", ") %>

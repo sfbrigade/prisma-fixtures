@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+import { allFakers } from '@faker-js/faker';
 import { IFixture, IParser } from '../interface';
 
 export class FakerParser implements IParser {
@@ -12,8 +12,9 @@ export class FakerParser implements IParser {
     }
 
     parse(value: string, fixture?: IFixture): any {
+        let faker = allFakers.en;
         if (fixture?.locale) {
-            faker.locale = fixture.locale;
+            faker = allFakers[fixture.locale as keyof typeof allFakers] ?? allFakers.en;
         }
         const result = faker.helpers.fake(value);
 

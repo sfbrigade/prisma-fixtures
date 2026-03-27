@@ -20,22 +20,22 @@ describe('Resolver', () => {
             {
                 parameters: {},
                 entity: 'User',
-                name: 'user1',
+                name: 'user2',
                 dependencies: [],
                 data: {
-                    firstName: '{{name.firstName}}',
-                    lastName: '{{name.lastName}}',
+                    firstName: '{{person.firstName}}',
+                    lastName: '{{person.lastName}}',
                     email: '{{internet.email}}',
                 },
             },
             {
                 parameters: {},
                 entity: 'User',
-                name: 'user2',
+                name: 'user1',
                 dependencies: [],
                 data: {
-                    firstName: '{{name.firstName}}',
-                    lastName: '{{name.lastName}}',
+                    firstName: '{{person.firstName}}',
+                    lastName: '{{person.lastName}}',
                     email: '{{internet.email}}',
                 },
             },
@@ -125,8 +125,8 @@ describe('Resolver', () => {
                 entity: 'User',
                 items: {
                     'user{1..2}': {
-                        firstName: '{{name.firstName}}',
-                        lastName: '{{name.lastName}}',
+                        firstName: '{{person.firstName}}',
+                        lastName: '{{person.lastName}}',
                         email: '{{internet.email}}',
                     },
                 },
@@ -211,8 +211,8 @@ describe('Resolver', () => {
                 entity: 'User',
                 items: {
                     user1: {
-                        firstName: '{{name.firstName}}',
-                        lastName: '{{name.lastName}}',
+                        firstName: '{{person.firstName}}',
+                        lastName: '{{person.lastName}}',
                         email: '{{internet.email}}',
                     },
                 },
@@ -241,8 +241,8 @@ describe('Resolver', () => {
                 entity: 'User',
                 items: {
                     user1: {
-                        firstName: '{{name.firstName}}',
-                        lastName: '{{name.lastName}}',
+                        firstName: '{{person.firstName}}',
+                        lastName: '{{person.lastName}}',
                         email: '{{internet.email}}',
                     },
                 },
@@ -272,7 +272,7 @@ describe('Resolver', () => {
                 items: {
                     'user{1..3}': {
                         firstName: 'firstName($current)',
-                        lastName: '{{name.lastName}}',
+                        lastName: '{{person.lastName}}',
                         email: '{{internet.email}}',
                     },
                 },
@@ -289,7 +289,7 @@ describe('Resolver', () => {
                 resolvedFields: undefined,
                 data: {
                     firstName: 'firstName1',
-                    lastName: '{{name.lastName}}',
+                    lastName: '{{person.lastName}}',
                     email: '{{internet.email}}',
                 },
             },
@@ -302,7 +302,7 @@ describe('Resolver', () => {
                 resolvedFields: undefined,
                 data: {
                     firstName: 'firstName2',
-                    lastName: '{{name.lastName}}',
+                    lastName: '{{person.lastName}}',
                     email: '{{internet.email}}',
                 },
             },
@@ -315,7 +315,7 @@ describe('Resolver', () => {
                 resolvedFields: undefined,
                 data: {
                     firstName: 'firstName3',
-                    lastName: '{{name.lastName}}',
+                    lastName: '{{person.lastName}}',
                     email: '{{internet.email}}',
                 },
             },
@@ -369,7 +369,7 @@ describe('Resolver', () => {
                 items: {
                     'user{1..3}': {
                         firstName: 'firstName($current*100)',
-                        lastName: '{{name.lastName}}',
+                        lastName: '{{person.lastName}}',
                         email: '{{internet.email}}',
                     },
                 },
@@ -386,7 +386,7 @@ describe('Resolver', () => {
                 resolvedFields: undefined,
                 data: {
                     firstName: 'firstName100',
-                    lastName: '{{name.lastName}}',
+                    lastName: '{{person.lastName}}',
                     email: '{{internet.email}}',
                 },
             },
@@ -399,7 +399,7 @@ describe('Resolver', () => {
                 resolvedFields: undefined,
                 data: {
                     firstName: 'firstName200',
-                    lastName: '{{name.lastName}}',
+                    lastName: '{{person.lastName}}',
                     email: '{{internet.email}}',
                 },
             },
@@ -412,7 +412,7 @@ describe('Resolver', () => {
                 resolvedFields: undefined,
                 data: {
                     firstName: 'firstName300',
-                    lastName: '{{name.lastName}}',
+                    lastName: '{{person.lastName}}',
                     email: '{{internet.email}}',
                 },
             },
@@ -438,8 +438,8 @@ describe('Resolver', () => {
                     entity: 'User',
                     items: {
                         user1: {
-                            firstName: '{{name.firstName}}',
-                            lastName: '{{name.lastName}}',
+                            firstName: '{{person.firstName}}',
+                            lastName: '{{person.lastName}}',
                             email: '{{internet.email}}',
                         },
                     },
@@ -467,8 +467,8 @@ describe('Resolver', () => {
                     entity: 'User',
                     items: {
                         user1: {
-                            firstName: '{{name.firstName}}',
-                            lastName: '{{name.lastName}}',
+                            firstName: '{{person.firstName}}',
+                            lastName: '{{person.lastName}}',
                             email: '{{internet.email}}',
                         },
                     },

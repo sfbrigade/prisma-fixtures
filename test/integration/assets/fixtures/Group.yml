@@ -3,6 +3,7 @@ locale: 'pl'
 parameters:
   names:
     admin: Admin
+resolvedFields: ["owner", "members"]
 items:
   group1:
     name: '<{names.admin}>'

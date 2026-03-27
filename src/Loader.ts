@@ -20,7 +20,7 @@ export class Loader {
      * @param {string} fixturesPath
      */
     load(fixturesPath: string): void {
-        const extensions = this.loaders.map((l) => l.extensionSupport.map((e) => e.substr(1)).join(',')).join(',');
+        const extensions = this.loaders.map((l) => l.extensionSupport.map((e) => e.substring(1)).join(',')).join(',');
         let files: string[] = [];
 
         if (fs.lstatSync(fixturesPath).isFile()) {
