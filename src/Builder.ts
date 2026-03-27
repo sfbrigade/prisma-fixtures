@@ -39,10 +39,12 @@ export class Builder {
                     let connect;
                     if (Array.isArray(associatedEntity)) {
                         connect = associatedEntity.map((e: any) => ({ id: e.id }));
-                    } else {
+                    } else if (associatedEntity) {
                         connect = { id: (associatedEntity as any).id };
                     }
-                    entity[propertyName] = { connect };
+                    if (connect) {
+                        entity[propertyName] = { connect };
+                    }
                 }),
             );
         }
