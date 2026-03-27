@@ -49,3 +49,4 @@ yarn.lock
 .circleci
 
 test/integration/assets/generated
+test.db

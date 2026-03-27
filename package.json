@@ -62,7 +62,7 @@
     "eslint": "^8.17.0",
     "graphology-types": "^0.24.8",
     "mocha": "^11.7.5",
-    "nyc": "^18.0.0",
+    "nyc": "^17.1.0",
     "prettier": "^2.0.0",
     "prisma": "^7.5.0",
     "release-it": "^19.2.4",

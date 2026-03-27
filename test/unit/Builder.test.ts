@@ -1,7 +1,7 @@
 import 'mocha';
 import * as path from 'path';
-import * as chaiAsPromised from 'chai-as-promised';
 import * as chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import { Builder, Parser } from '../../src';
 import { Connection as MockConnection } from './assets/mock/Connection';
 
