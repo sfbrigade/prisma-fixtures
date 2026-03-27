@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import 'reflect-metadata';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as cliProgress from 'cli-progress';
@@ -66,13 +66,13 @@ export class LoadCommand implements yargs.CommandModule {
         let prisma: any = undefined;
         try {
             if (withDebug) {
-                console.log(chalk.grey('Connection to database...')); // eslint-disable-line
+                console.log(chalk.gray('Connection to database...')); // eslint-disable-line
             }
             ({ prisma } = await import(clientPath));
             await prisma.$connect();
 
             if (withDebug) {
-                console.log(chalk.grey('Loading fixtureConfigs')); // eslint-disable-line
+                console.log(chalk.gray('Loading fixtureConfigs')); // eslint-disable-line
             }
             const loader = new Loader();
             (args.paths as string[]).forEach((fixturePath: string) => {
@@ -91,7 +91,7 @@ export class LoadCommand implements yargs.CommandModule {
             });
 
             if (withDebug) {
-                console.log(chalk.grey('Resolving fixtureConfigs')); // eslint-disable-line
+                console.log(chalk.gray('Resolving fixtureConfigs')); // eslint-disable-line
             }
             const resolver = new Resolver();
             const fixtures = resolver.resolve(loader.fixtureConfigs);
@@ -113,7 +113,7 @@ export class LoadCommand implements yargs.CommandModule {
             bar.stop();
 
             if (withDebug) {
-                console.log(chalk.grey('Database disconnect')); // eslint-disable-line
+                console.log(chalk.gray('Database disconnect')); // eslint-disable-line
             }
             await prisma.$disconnect();
             process.exit(0);

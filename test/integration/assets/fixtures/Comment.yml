@@ -4,7 +4,7 @@ parameters: {}
 resolvedFields: ["post"]
 items:
   comment{1..10}:
-    fullName: '{{name.firstName}} {{name.lastName}}'
+    fullName: '{{person.firstName}} {{person.lastName}}'
     email: '{{internet.email}}'
     text: '{{lorem.paragraphs}}'
     post: '@post*'

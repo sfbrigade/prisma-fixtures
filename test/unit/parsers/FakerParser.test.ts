@@ -18,7 +18,7 @@ describe('Faker parser', () => {
 
     it('should be number', () => {
         const parser = new FakerParser();
-        const result = parser.parse('{{datatype.number}}');
+        const result = parser.parse('{{number.int}}');
 
         assert.isNumber(result);
     });
@@ -32,14 +32,14 @@ describe('Faker parser', () => {
 
     it('should be string', () => {
         const parser = new FakerParser();
-        const result = parser.parse('{{random.word}}');
+        const result = parser.parse('{{word.sample}}');
 
         assert.isString(result);
     });
 
     it('should be translated string', () => {
         const parser = new FakerParser();
-        const result = parser.parse('{{random.word}}', {
+        const result = parser.parse('{{word.sample}}', {
             locale: 'pl',
         } as IFixture);
 

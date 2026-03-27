@@ -4,8 +4,8 @@ export default {
     processor: '/foo/boo',
     items: {
         user2: {
-            firstName: '{{name.firstName}}',
-            lastName: '{{name.lastName}}',
+            firstName: '{{person.firstName}}',
+            lastName: '{{person.lastName}}',
             email: '{{internet.email}}',
         },
     },

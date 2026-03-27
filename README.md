@@ -55,7 +55,7 @@ yarn build
 entity: Comment
 items:
   comment{1..10}:
-    fullName: '{{name.firstName}} {{name.lastName}}'
+    fullName: '{{person.firstName}} {{person.lastName}}'
     email: '{{internet.email}}'
     text: '{{lorem.paragraphs}}'
     post: '@post*'
@@ -82,14 +82,14 @@ items:
 entity: User
 items:
   user1:
-    firstName: '{{name.firstName}}'
-    lastName: '{{name.lastName}}'
+    firstName: '{{person.firstName}}'
+    lastName: '{{person.lastName}}'
     email: '{{internet.email}}'
     profile: '@profile1'
     password: 'hashed_password'
   user2:
-    firstName: '{{name.firstName}}'
-    lastName: '{{name.lastName}}'
+    firstName: '{{person.firstName}}'
+    lastName: '{{person.lastName}}'
     email: '{{internet.email}}'
     profile: '@profile2'
     password: 'hashed_password'
@@ -310,10 +310,10 @@ entity: User
 items:
   user{1..10}:
     username: '{{internet.userName}}'
-    fullname: '{{name.firstName}} {{name.lastName}}'
+    fullname: '{{person.firstName}} {{person.lastName}}'
     birthDate: '{{date.past}}'
     email: '{{internet.email}}'
-    favoriteNumber: '{{datatype.number}}'
+    favoriteNumber: '{{number.int}}'
 ```
 
 ### EJS templating
@@ -363,8 +363,8 @@ entity: User
 processor: ../processor/UserProcessor
 items:
   user1:
-    firstName: '{{name.firstName}}'
-    lastName: '{{name.lastName}}'
+    firstName: '{{person.firstName}}'
+    lastName: '{{person.lastName}}'
     email: '{{internet.email}}'
 ```
 
